@@ -40,7 +40,7 @@ Tested platforms:
 - On some Windows systems, you may see a Rectangle.op_Equality error in the logs. This is a known issue with PyWebView and doesn't affect functionality.
 - If you have a firewall or antivirus, it might block the app from accessing the internet. Make sure to allow the app through your firewall.
 - Windows Defender Smartscreen may block the launching of the program because it is unsigned. Click "More information" to execute anyway.
-- **Linux**: The application requires GTK 3 and WebKit2GTK 4.1 system dependencies. See [LINUX-INSTALLATION.md](LINUX-INSTALLATION.md) for setup instructions. 
+- **Linux**: The application requires GTK 3 and WebKit2GTK 4.1 system dependencies. See [LINUX-INSTALLATION.md](docs/LINUX-INSTALLATION.md) for setup instructions. 
 
 
 ## ℹ️ About This Project
