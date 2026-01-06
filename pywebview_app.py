@@ -70,6 +70,12 @@ class Api:
     
     def __init__(self):
         self.window = None
+        # Define all available methods explicitly to help with introspection
+        self._methods = ['select_folder', 'get_folder', 'open_folder']
+    
+    def __dir__(self):
+        """Help PyWebView with introspection by returning available methods"""
+        return self._methods + ['set_window']
     
     def set_window(self, window):
         """Store reference to the window object"""
@@ -77,6 +83,10 @@ class Api:
     
     def select_folder(self):
         """Open folder selection dialog and return selected path"""
+        if not hasattr(self, 'window') or self.window is None:
+            logger.error("Window object not set in API")
+            return None
+        
         try:
             result = self.window.create_file_dialog(webview.FOLDER_DIALOG)
             if result and len(result) > 0:
@@ -93,17 +103,26 @@ class Api:
     
     def get_folder(self):
         """Get the currently selected folder"""
-        return get_selected_folder()
+        try:
+            return get_selected_folder()
+        except Exception as e:
+            logger.error(f"Error getting folder: {str(e)}")
+            return None
     
     def open_folder(self, path):
         """Open a folder in the file explorer"""
         try:
+            if not path or not isinstance(path, str):
+                logger.error("Invalid path provided to open_folder")
+                return False
+                
             if os.path.exists(path):
                 if sys.platform == 'win32':
                     os.startfile(path)
                 elif sys.platform == 'darwin':  # macOS
                     os.system(f'open "{path}"')
-                else:  # Linux
+                else:  # Linux and other Unix-like systems
+                    # Use xdg-open which is the standard on Linux
                     os.system(f'xdg-open "{path}"')
                 return True
             return False

@@ -228,8 +228,8 @@
             <div class="mb-4">
                 <label class="block text-gray-700 mb-2">Output Directory</label>
                 <div class="flex items-center">
-                    <p class="flex-grow px-3 py-2 border rounded-lg bg-gray-100 text-gray-700" id="output-dir-display"></p>
-                    <button type="button" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 folder-selection-btn" data-target="output-dir-display">
+                    <input type="text" class="flex-grow px-3 py-2 border rounded-lg bg-white text-gray-700" id="collections-output-dir" readonly>
+                    <button type="button" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 folder-selection-btn" data-target="collections-output-dir">
                         Browse...
                     </button>
                 </div>
@@ -508,8 +508,8 @@
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Output Directory</label>
                     <div class="flex items-center">
-                        <p class="flex-grow px-3 py-2 border rounded-lg bg-gray-100 text-gray-700" id="output-dir-display"></p>
-                        <button type="button" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 folder-selection-btn" data-target="output-dir-display">
+                        <input type="text" class="flex-grow px-3 py-2 border rounded-lg bg-white text-gray-700" id="output-dir" readonly>
+                        <button type="button" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 folder-selection-btn" data-target="output-dir">
                             Browse...
                         </button>
                     </div>
@@ -758,9 +758,9 @@
                         // Use pywebview's folder dialog
                         window.pywebview.api.select_folder().then(result => {
                             if (result) {
-                                // Update the display element
+                                // Update the input element
                                 if (targetElement) {
-                                    targetElement.textContent = result;
+                                    targetElement.value = result;
                                 }
                                 
                                 // Update the server
@@ -778,9 +778,9 @@
                         // Fallback if not running in pywebview
                         const path = prompt('Enter folder path:', targetElement ? targetElement.textContent : '');
                         if (path) {
-                            // Update the display element
+                            // Update the input element
                             if (targetElement) {
-                                targetElement.textContent = path;
+                                targetElement.value = path;
                             }
                             
                             // Update the server
@@ -957,7 +957,12 @@
             resultsSection.classList.add('hidden');
             exportClearBtn.classList.add('hidden');
             
-            // Get parameters
+            // Get parameters with null checks
+            console.log('Starting tour export...');
+            
+            // Get output directory from input element
+            const outputDirInput = document.getElementById('output-dir');
+            
             const anonymous = anonymousCheckbox.checked;
             const email = emailInput.value.trim();
             const password = passwordInput.value.trim();
@@ -968,27 +973,33 @@
             const skipExisting = skipExistingCheckbox.checked;
             const idFilename = idFilenameCheckbox.checked;
             const addDate = addDateCheckbox.checked;
-            const maxTitleLength = parseInt(maxTitleLengthInput.value);
-            const maxDescLength = parseInt(maxDescLengthInput.value);
+            const maxTitleLength = maxTitleLengthInput.value ? parseInt(maxTitleLengthInput.value) : -1;
+            const maxDescLength = maxDescLengthInput.value ? parseInt(maxDescLengthInput.value) : -1;
             const downloadImages = downloadImagesCheckbox.checked;
-            const chunkSize = parseInt(chunkSizeInput.value);
-            const chunkStart = parseInt(chunkStartInput.value);
+            const chunkSize = chunkSizeInput.value ? parseInt(chunkSizeInput.value) : 0;
+            const chunkStart = chunkStartInput.value ? parseInt(chunkStartInput.value) : 0;
             
             // Validate inputs
+            console.log('🔍 Validating inputs...');
             if (!anonymous && (!email || !password)) {
+                console.log('❌ Missing email/password');
                 alert('Please enter your email and password');
                 return;
             }
             
             if (tourSelection === 'all' && anonymous) {
+                console.log('❌ Anonymous mode with all tours');
                 alert('Anonymous mode only supports single tour export');
                 return;
             }
             
             if (tourSelection !== 'all' && !tourSelection) {
+                console.log('❌ Missing tour ID');
                 alert('Please enter a tour ID');
                 return;
             }
+            
+            console.log('✅ Input validation passed');
             
             // Prepare request data
             const data = {
@@ -1016,6 +1027,7 @@
         // Start processing function
         async function startProcessing(data) {
             try {
+                console.log('📊 Setting up status UI...');
                 // Reset and show status section
                 statusSection.classList.remove('hidden');
                 statusText.textContent = 'Starting...';

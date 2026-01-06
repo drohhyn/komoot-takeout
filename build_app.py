@@ -14,7 +14,11 @@ def main():
         shutil.rmtree('dist')
     
     # Determine data separator based on OS
-    separator = ';' if platform.system().lower() == 'windows' else ':'
+    current_os = platform.system().lower()
+    if current_os == 'windows':
+        separator = ';'
+    else:  # macOS, Linux, and other Unix-like systems
+        separator = ':'
     
     # Build command
     cmd = [

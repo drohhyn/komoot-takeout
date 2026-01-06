@@ -15,47 +15,34 @@ komoot-exporter/
 
 ## 🛠 Setup Instructions
 
-### 0. Install Python (Windows)
+### 0. Install Python
 
-#### 1. Check if Python is installed
-Open a new terminal and try:
+#### Linux
 
-```
-python --version
-```
+##### 1. Install Python
+Most Linux distributions come with Python pre-installed. Check with:
 
 ```
 python3 --version
 ```
 
-If both fail, you need to install Python first.
+If not installed, install it using your package manager:
 
-#### 2. Install Python correctly
-Download Python from:
-👉 https://www.python.org/downloads/windows/
+**Ubuntu/Debian:**
+```
+sudo apt update
+sudo apt install python3 python3-pip python3-venv
+```
 
-Important when installing: ✅ During installation, check the box that says "Add Python to PATH" at the beginning of the installer!
+##### 2. Install required system dependencies
+For PyWebView to work properly on Linux, you'll need GTK and WebKit:
 
-Without this, Windows can't find python in the terminal.
-
+**Ubuntu/Debian:**
+```
+sudo apt install libgtk-3-0 libwebkit2gtk-4.0-37
+```
 
 ### 1. Create and activate virtual environment
-
-#### Windows
-
-```
-python -m venv venv 
-```
-
-If you are using PowerShell on Windows you need to use this...
-```
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-```
-
-``` 
-venv\Scripts\activate
-```
-
 
 #### macOS/Linux
 
@@ -103,38 +90,6 @@ http://localhost:5001/
 
 ---
 
-## 📦 Packaging into a Desktop App
-
-### Using the build script (recommended)
-
-We provide a build script that handles all the packaging details:
-
-```
-python build_app.py
-```
-
-### Manual packaging
-
-#### Windows (Build .exe)
-
-```
-pyinstaller --noconfirm --clean --name=komoot-takeout --onefile --windowed --add-data=templates/index.html;templates --hidden-import=flask --hidden-import=komoot_adapter --hidden-import=bs4 --hidden-import=gpxpy --hidden-import=webview --hidden-import=requests --hidden-import=zipfile --hidden-import=concurrent.futures --hidden-import=komootgpx pywebview_app.py
-```
-
-#### macOS (Build .app)
-
-```
-pyinstaller --noconfirm --clean --name=komoot-takeout --onefile --windowed --add-data=templates/index.html:templates --hidden-import=flask --hidden-import=komoot_adapter --hidden-import=bs4 --hidden-import=gpxpy --hidden-import=webview --hidden-import=requests --hidden-import=zipfile --hidden-import=concurrent.futures --hidden-import=komootgpx pywebview_app.py
-```
-
-Note: On Windows use a semicolon `;`, on macOS use a colon `:` when specifying paths with --add-data.
-
-Output will be placed in the `/dist/` folder:
-
-```
-/dist/komoot-takeout.exe     (Windows)
-/dist/komoot-takeout         (macOS)
-```
 
 ---
 
@@ -147,5 +102,6 @@ Output will be placed in the `/dist/` folder:
 | Templates not found in executable | Use the correct `--add-data` format for your OS |
 | "No module named 'xyz'" | Make sure all dependencies are properly installed, or add them to `--hidden-import` |
 | Internal Server Error | Check the log file for detailed error information |
+| PyWebView not working on Linux | Install required GTK and WebKit dependencies (`libgtk-3-0`, `libwebkit2gtk-4.1` on Ubuntu/Debian) |
 
 ---

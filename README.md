@@ -1,3 +1,5 @@
+Check [original repository](https://github.com/nevvkid/komoot-takeout) as this in one only the get it running in Linux fast.
+
 # 🧭 komoot-takeout
 **Reclaim your Tours and Collections from komoot in one click with this simple desktop app.**
 
@@ -18,8 +20,13 @@ Consider this tool a stop-gap solution created in response to Komoot locking up 
 
 - **Windows (.exe):** ⬇️ [komoot-takeout.exe ](https://github.com/nevvkid/komoot-takeout/raw/1fb58e052c5b06e9c6c1fac2a3e370ed183ce96e/dist/komoot-takeout.exe)⬇️
 - **macOS (.app):** ⬇️ [komoot-takeout.app(macOS).zip](https://github.com/nevvkid/komoot-takeout/raw/b33521fb8c5da4472e847c451b918125ac5d8a2b/dist/komoot-takeout.app(macOS).zip)⬇️
+- **Linux (.sh):** ⬇️ [komoot-takeout-linux](https://github.com/drohhyn/komoot-takeout/raw/main/komoot-takeout-linux) **build yourself** ⬇️
 
-Only tested with Windows 11 Pro & macOS 15.x.x (Apple silicon)
+Tested platforms:
+- ✅ Windows 11 Pro -> [In original repository](https://github.com/nevvkid/komoot-takeout)
+- ✅ macOS 15.x.x (Apple silicon) -> [In original repository](https://github.com/nevvkid/komoot-takeout)
+- ✅ Ubuntu 24.04 LTS
+- ✅ Debian 12+ (should work)
 ---
 
 ![windows 11 - screenshot](windows11-screenshot.png)
@@ -32,7 +39,8 @@ Only tested with Windows 11 Pro & macOS 15.x.x (Apple silicon)
 - Collection Download Button becomes unclickable after downloading a collection. Workaround: Close komoot-takeout and re-open. You can paste multiple links or the link to the Collection overview (e.g. komoot.com/user/123456789/collections/personal) into the text box for batch fetching.
 - On some Windows systems, you may see a Rectangle.op_Equality error in the logs. This is a known issue with PyWebView and doesn't affect functionality.
 - If you have a firewall or antivirus, it might block the app from accessing the internet. Make sure to allow the app through your firewall.
-- Windows Defender Smartscreen may block the launching of the program because it is unsigned. Click "More information" to execute anyway. 
+- Windows Defender Smartscreen may block the launching of the program because it is unsigned. Click "More information" to execute anyway.
+- **Linux**: The application requires GTK 3 and WebKit2GTK 4.1 system dependencies. See [LINUX-INSTALLATION.md](LINUX-INSTALLATION.md) for setup instructions. 
 
 
 ## ℹ️ About This Project
@@ -45,11 +53,7 @@ This project builds on the excellent [komootGPX](https://github.com/timschneeb/K
 - [PyInstaller](https://www.pyinstaller.org/) for executable packaging
 
 ## 🚀 Contributing
-This tool contains bugs due to being rapidly coded with the help of generative AI. Contributions are welcome. Please open an issue or a pull request. 
-
-
-### Log Files
-The application creates a log file called `komoot_exporter.log` in the directory where you run the executable. This file contains detailed information if something goes wrong.
+This tool contains bugs due to being rapidly coded with the help of generative AI.
 
 ## ⚠ Disclaimer
 
